@@ -1,19 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import ActorsCard from "../components/ActorsCard"; 
-
 
 function Actors() {
-
   const [actors, setActors] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:4000/actors")
-      .then(response => response.json())
-      .then(data => setActors(data))
-      .catch(error => console.error("Error fetching actors:", error));
+      .then((res) => res.json())
+      .then(setActors);
   }, []);
-
 
   return (
     <>
@@ -22,18 +17,19 @@ function Actors() {
       </header>
       <main>
         <h1>Actors Page</h1>
-        {actors.map(actor => {
-          return (
-            <ActorsCard 
-              key={actor.id }
-              name={actor.name}
-              movies={actor.movies}
-            />
-          );
-        })}
+        {actors.map((actor) => (
+          <article key={actor.name}>
+            <h2>{actor.name}</h2>
+            <ul>
+              {actor.movies.map((movie, index) => (
+                <li key={index}>{movie}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
       </main>
     </>
   );
-};
+}
 
 export default Actors;
